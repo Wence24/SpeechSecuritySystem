@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechSecuritySystem", "SpeechSecuritySystem.csproj", "{FA52007C-0847-4802-A923-2C891DC86C2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA52007C-0847-4802-A923-2C891DC86C2D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {645A9E29-1A00-4C49-9FDE-FE637C1FF9E8}
+	EndGlobalSection
+EndGlobal
