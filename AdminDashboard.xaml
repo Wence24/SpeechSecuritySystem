@@ -1,0 +1,69 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeechSecuritySystem.AdminDashboard"
+             Title="Admin Dashboard">
+
+    <ContentPage.Resources>
+        <Style x:Key="LockedButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="Gray"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="Opacity" Value="0.6"/>
+        </Style>
+        <Style x:Key="UnlockedButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="LightBlue"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="Opacity" Value="1"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <Grid>
+            <!-- Background Image -->
+            <Image Source="comebg.png" Aspect="AspectFill" />
+
+            <!-- White Rounded Box for Organizing Content -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="20"
+                   Padding="20"
+                   Margin="40"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HasShadow="True">
+
+                <Frame.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="5,5"
+                            Radius="10"
+                            Opacity="5" />
+                </Frame.Shadow>
+
+                <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
+
+                    <Image x:Name="LockIcon" 
+                           Source="lock.png" 
+                           WidthRequest="100" 
+                           HeightRequest="100" 
+                           IsVisible="True"/>
+
+                    <Label x:Name="StatusLabel" 
+                           Text="Admin Dashboard" 
+                           FontSize="Large" 
+                           TextColor="Gray" 
+                           HorizontalOptions="Center" />
+
+                    <Button x:Name="LogoutButton" 
+                            Text="Log Out" 
+                            FontSize="Medium" 
+                            Padding="15"
+                            TextColor="White"
+                            BackgroundColor="LightBlue"
+                            Clicked="OnLogoutButtonClicked"
+                            HorizontalOptions="Center"
+                            WidthRequest="200"
+                            HeightRequest="60" />
+
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

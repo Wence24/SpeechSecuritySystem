@@ -19,7 +19,7 @@
     <ContentPage.Content>
         <Grid>
             <!-- Background Image -->
-            <Image Source="streak.png" Aspect="AspectFill" />
+            <Image Source="comebg.png" Aspect="AspectFill" />
 
             <!-- White Rounded Box for Organizing Content -->
             <Frame BackgroundColor="White"
@@ -30,15 +30,13 @@
                    VerticalOptions="Center"
                    HasShadow="True">
 
-
-                <!-- Drop Shadow Properties -->
                 <Frame.Shadow>
                     <Shadow Brush="Black"
                             Offset="5,5"
                             Radius="10"
                             Opacity="5" />
                 </Frame.Shadow>
-                
+
                 <VerticalStackLayout Spacing="20" HorizontalOptions="Center" VerticalOptions="Center">
 
                     <Image x:Name="LockIcon" 
@@ -54,12 +52,13 @@
                            HorizontalOptions="Center" />
 
                     <Label x:Name="AttemptStatusLabel" 
-                           Text="Attempt 0 of 5 failed"
+                           Text="Attempt 0 of 3 failed"
                            FontSize="Medium" 
                            TextColor="Gray"
                            HorizontalOptions="Center"
                            IsVisible="True" />
 
+                    <!-- Adjusted Speak Button -->
                     <Button x:Name="SpeakButton"
                             Text="Speak to Unlock"
                             FontSize="Medium"
@@ -68,7 +67,16 @@
                             BackgroundColor="LightBlue"
                             Clicked="OnSpeakButtonClicked"
                             IsEnabled="True" 
-                            HorizontalOptions="Center" />
+                            HorizontalOptions="Center"
+                            WidthRequest="200"
+                            HeightRequest="60" />
+
+                    <Label x:Name="NoAudioMessage" 
+                           Text="No audio detected!" 
+                           FontSize="Medium" 
+                           TextColor="Red" 
+                           HorizontalOptions="Center"
+                           IsVisible="False" />
 
                     <Label x:Name="TimerLabel"
                            Text="Time remaining: 0:00"

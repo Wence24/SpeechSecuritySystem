@@ -58,7 +58,10 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\apex.png" />
+	  <None Remove="Resources\Images\comebg.png" />
+	  <None Remove="Resources\Images\comelec.png" />
 	  <None Remove="Resources\Images\lock.png" />
+	  <None Remove="Resources\Images\microphone.png" />
 	  <None Remove="Resources\Images\streak.png" />
 	  <None Remove="Resources\Images\unlock.png" />
 	</ItemGroup>
@@ -71,6 +74,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="AdminDashboard.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="LandingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

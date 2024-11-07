@@ -1,15 +1,17 @@
 ﻿using System;
 using Microsoft.Maui.Controls;
-using System.Timers; // Ensure to use System.Timers
+using System.Timers;
+using System.Threading.Tasks;
 
 namespace SpeechSecuritySystem
 {
     public partial class MainPage : ContentPage
     {
         private int failedAttempts = 0;
-        private System.Timers.Timer? lockTimer; // Declare as nullable
+        private System.Timers.Timer? lockTimer;
         private TimeSpan remainingTime;
         private bool isLocked = false;
+        private System.Timers.Timer? listeningTimer;
 
         public MainPage()
         {
@@ -18,45 +20,100 @@ namespace SpeechSecuritySystem
 
         private async void OnSpeakButtonClicked(object sender, EventArgs e)
         {
-            // Disable the button if locked
             if (isLocked)
             {
                 await DisplayAlert("Locked", $"Please wait {remainingTime.TotalSeconds} seconds before trying again.", "OK");
                 return;
             }
 
+            // Change button to microphone icon and adjust style
+            SpeakButton.Text = ""; // Remove text
+            SpeakButton.ImageSource = "microphone.png"; // Set to microphone icon
+            SpeakButton.BackgroundColor = Colors.Transparent; // Make background transparent
+            SpeakButton.WidthRequest = 60; // Make button smaller to fit microphone
+            SpeakButton.HeightRequest = 60; // Set same height as width
             SpeakButton.IsEnabled = false;
 
-            // Simulate voice recognition
-            bool isVoiceRecognized = SimulateVoiceRecognition(); // Replace with your actual recognition logic
+            // Hide previous "No audio detected" message
+            NoAudioMessage.IsVisible = false;
 
-            if (isVoiceRecognized)
-            {
-                await Navigation.PushAsync(new LandingPage());
-            }
-            else
-            {
-                failedAttempts++;
-                LockIcon.Source = "lock.png";
-                ErrorMessage.IsVisible = true;
-                AttemptStatusLabel.Text = $"Attempt {failedAttempts} of 5 failed";
-                AttemptStatusLabel.IsVisible = true;
+            // Start listening and timeout if no audio is detected
+            bool isAudioDetected = await ListenForAudioAsync();
 
-                if (failedAttempts >= 5)
+            if (isAudioDetected)
+            {
+                bool isVoiceRecognized = SimulateVoiceRecognition();
+
+                if (isVoiceRecognized)
                 {
-                    SpeakButton.IsEnabled = false;
-                    SpeakButton.BackgroundColor = Colors.Gray;
-                    SpeakButton.Text = "Locked (5 attempts exceeded)";
-                    StatusLabel.Text = "Voice Lock Inactive"; // Change label text
-
-                    // Start the timer based on whether it is the first exceedance or a subsequent one
-                    StartLockTimer(isLocked ? TimeSpan.FromMinutes(10) : TimeSpan.FromMinutes(1));
+                    await Navigation.PushAsync(new LandingPage());
                 }
                 else
                 {
-                    SpeakButton.IsEnabled = true;
-                    SpeakButton.BackgroundColor = Colors.LightBlue;
+                    RegisterFailedAttempt();
                 }
+            }
+            else
+            {
+                NoAudioMessage.IsVisible = true; // Show "No audio detected" message
+                RegisterFailedAttempt();
+            }
+
+            // Revert button text and reset size
+            SpeakButton.Text = "Speak to Unlock";
+            SpeakButton.ImageSource = null; // Remove microphone icon
+            SpeakButton.BackgroundColor = Colors.LightBlue; // Restore background color
+            SpeakButton.WidthRequest = 200; // Reset width
+            SpeakButton.HeightRequest = 60; // Reset height
+            SpeakButton.IsEnabled = true;
+        }
+
+        private async Task<bool> ListenForAudioAsync()
+        {
+            bool audioDetected = false;
+
+            // Start listening for 5 seconds
+            listeningTimer = new System.Timers.Timer(5000); // 5 seconds
+            listeningTimer.Elapsed += (s, e) => {
+                listeningTimer.Stop();
+                audioDetected = false; // No audio detected within the 5 seconds
+            };
+
+            listeningTimer.Start();
+
+            // Simulate audio detection; replace this with actual audio detection logic
+            await Task.Delay(3000); // Simulating delay; replace with actual audio check
+
+            // If audio is detected within the 5-second period, stop the timer
+            if (true /* replace with actual audio detection condition */)
+            {
+                audioDetected = true;
+                listeningTimer.Stop();
+            }
+
+            return audioDetected;
+        }
+
+        private void RegisterFailedAttempt()
+        {
+            failedAttempts++;
+            LockIcon.Source = "lock.png";
+            ErrorMessage.IsVisible = true;
+            AttemptStatusLabel.Text = $"Attempt {failedAttempts} of 3 failed";
+            AttemptStatusLabel.IsVisible = true;
+
+            if (failedAttempts >= 3)
+            {
+                SpeakButton.IsEnabled = false;
+                SpeakButton.BackgroundColor = Colors.Gray;
+                SpeakButton.Text = "Locked (Attempts exceeded)";
+                StatusLabel.Text = "Voice Lock Inactive";
+                StartLockTimer(TimeSpan.FromMinutes(1));
+            }
+            else
+            {
+                SpeakButton.IsEnabled = true;
+                SpeakButton.BackgroundColor = Colors.LightBlue;
             }
         }
 
@@ -64,44 +121,39 @@ namespace SpeechSecuritySystem
         {
             isLocked = true;
             remainingTime = duration;
-            TimerLabel.IsVisible = true; // Show the timer label
-            TimerLabel.Text = $"Time remaining: {remainingTime.Minutes}:{remainingTime.Seconds:D2}"; // Set initial time
+            TimerLabel.IsVisible = true;
+            TimerLabel.Text = $"Time remaining: {remainingTime.Minutes}:{remainingTime.Seconds:D2}";
 
-            lockTimer = new System.Timers.Timer(1000); // 1 second intervals
-            lockTimer.Elapsed += OnTimerElapsed; // Attach the elapsed event
-            lockTimer.Start(); // Start the timer
+            lockTimer = new System.Timers.Timer(1000);
+            lockTimer.Elapsed += OnTimerElapsed;
+            lockTimer.Start();
         }
 
-        private void OnTimerElapsed(object? sender, ElapsedEventArgs e) // Use nullable parameter
+        private void OnTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             if (remainingTime.TotalSeconds > 0)
             {
                 remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(1));
-
-                // Update the timer label on the main thread
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
+                MainThread.BeginInvokeOnMainThread(() => {
                     TimerLabel.Text = $"Time remaining: {remainingTime.Minutes}:{remainingTime.Seconds:D2}";
                 });
             }
             else
             {
-                // Timer completed, unlock
-                lockTimer?.Stop(); // Safely stop the timer if it's not null
-                lockTimer?.Dispose(); // Dispose of the timer to release resources
+                lockTimer?.Stop();
+                lockTimer?.Dispose();
                 isLocked = false;
-                failedAttempts = 0; // Reset failed attempts
+                failedAttempts = 0;
 
-                // Update UI on the main thread
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
+                MainThread.BeginInvokeOnMainThread(() => {
                     SpeakButton.IsEnabled = true;
                     SpeakButton.BackgroundColor = Colors.LightBlue;
                     SpeakButton.Text = "Speak to Unlock";
-                    AttemptStatusLabel.IsVisible = false; // Hide the attempt status label
-                    StatusLabel.Text = "Voice Lock Active"; // Change back to active
-                    ErrorMessage.IsVisible = false; // Reset error message visibility
-                    TimerLabel.IsVisible = false; // Hide the timer when done
+                    AttemptStatusLabel.IsVisible = false;
+                    StatusLabel.Text = "Voice Lock Active";
+                    ErrorMessage.IsVisible = false;
+                    TimerLabel.IsVisible = false;
+                    NoAudioMessage.IsVisible = false;
                 });
             }
         }
@@ -116,20 +168,19 @@ namespace SpeechSecuritySystem
         {
             failedAttempts = 0;
             SpeakButton.IsEnabled = true;
-            SpeakButton.BackgroundColor = Colors.LightBlue; // Ensure button starts active
+            SpeakButton.BackgroundColor = Colors.LightBlue;
             SpeakButton.Text = "Speak to Unlock";
-            AttemptStatusLabel.Text = "Attempt 0 of 5 failed"; // Reset attempt status
-            AttemptStatusLabel.IsVisible = false; // Hide the attempt status label initially
-            StatusLabel.Text = "Voice Lock Active"; // Set initial state
-            ErrorMessage.IsVisible = false; // Reset error message visibility
-            TimerLabel.IsVisible = false; // Hide timer initially
+            AttemptStatusLabel.Text = "Attempt 0 of 3 failed";
+            AttemptStatusLabel.IsVisible = false;
+            StatusLabel.Text = "Voice Lock Active";
+            ErrorMessage.IsVisible = false;
+            TimerLabel.IsVisible = false;
+            NoAudioMessage.IsVisible = false;
         }
 
-        // Simulated voice recognition (replace with your actual logic)
         private bool SimulateVoiceRecognition()
         {
-            // Simulate a failure 80% of the time for testing purposes
-            return new Random().Next(0, 10) < 2; // 20% chance of success
+            return new Random().Next(0, 0) < 2;
         }
     }
 }

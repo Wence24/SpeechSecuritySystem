@@ -7,11 +7,18 @@ namespace SpeechSecuritySystem
         public LandingPage()
         {
             InitializeComponent();
-            Appearing += OnPageAppearing; // Subscribe to the Appearing event
+            Appearing += OnPageAppearing;
+
+            // Ensure login system is hidden initially
+            LoginContainer.IsVisible = false;
         }
 
         private async void OnPageAppearing(object? sender, EventArgs e)
         {
+            // Hide login system and show welcome elements
+            LoginContainer.IsVisible = false;
+            WelcomeStack.IsVisible = true;
+
             // Flash effect: Fade in the white BoxView and then fade it out
             await FlashBox.FadeTo(1, 300);  // Flash in
             await Task.Delay(200);          // Pause for a brief moment
@@ -23,18 +30,38 @@ namespace SpeechSecuritySystem
                 WelcomeLabel.FadeTo(1, 500)  // Fade in the welcome text
             );
 
-            // Pause for 3 seconds before fading out
+            // Pause before fading out
             await Task.Delay(1000);
 
-            // Fade out the Unlock Image and Welcome Text immediately
+            // Fade out the Welcome elements
             await Task.WhenAll(
-                UnlockImage.FadeTo(0, 500), // Fade out the lock image
-                WelcomeLabel.FadeTo(0, 500)  // Fade out the welcome text
+                UnlockImage.FadeTo(0, 500),
+                WelcomeLabel.FadeTo(0, 500)
             );
 
-            // Show the background image after the text and lock fade out
-            // Set a background image for the landing page
-            BackgroundImageSource = "apex.png"; // Background image
+            // Set background image
+            BackgroundImageSource = "comebg.png";
+
+            // Hide welcome stack and show login system with fade
+            WelcomeStack.IsVisible = false;
+            LoginContainer.Opacity = 0;
+            LoginContainer.IsVisible = true;
+            await LoginContainer.FadeTo(1, 500);
+        }
+
+        private async void OnLoginClicked(object sender, EventArgs e)
+        {
+            string username = UsernameEntry.Text;
+            string password = PasswordEntry.Text;
+
+            if (username == "admin" && password == "admin123")
+            {
+                await Navigation.PushAsync(new AdminDashboard());
+            }
+            else
+            {
+                await DisplayAlert("Login Failed", "Invalid username or password. Please try again.", "OK");
+            }
         }
     }
 }

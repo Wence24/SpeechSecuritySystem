@@ -7,19 +7,22 @@
         <Grid>
             <!-- White Flash Box -->
             <BoxView x:Name="FlashBox" 
-         Color="White" 
-         Opacity="0" 
-         HorizontalOptions="FillAndExpand" 
-         VerticalOptions="FillAndExpand"/>
+                     Color="White" 
+                     Opacity="0" 
+                     HorizontalOptions="FillAndExpand" 
+                     VerticalOptions="FillAndExpand"/>
 
-            <VerticalStackLayout Spacing="20" Padding="30" HorizontalOptions="Center" VerticalOptions="Center">
+            <!-- Welcome Animation Elements -->
+            <VerticalStackLayout x:Name="WelcomeStack"
+                               Spacing="20" 
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center">
                 <!-- Unlock Image -->
                 <Image x:Name="UnlockImage"
                        Source="unlock.png" 
                        WidthRequest="100" 
                        HeightRequest="100" 
                        HorizontalOptions="Center" 
-                       VerticalOptions="Start" 
                        Opacity="0" />
 
                 <!-- Welcome Text -->
@@ -30,6 +33,100 @@
                        HorizontalOptions="Center" 
                        Opacity="0" />
             </VerticalStackLayout>
+
+            <!-- Login System Container -->
+            <Border x:Name="LoginContainer"
+                   StrokeShape="RoundRectangle 20"
+                   BackgroundColor="White"
+                   Padding="30"
+                   Margin="20"
+                   WidthRequest="300"
+                   HeightRequest="400"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   IsVisible="False">
+
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                           Offset="0,10"
+                           Radius="20"
+                           Opacity="0.3"/>
+                </Border.Shadow>
+
+                <!-- Login System -->
+                <VerticalStackLayout x:Name="LoginStack" 
+                                   Spacing="20" 
+                                   HorizontalOptions="Center" 
+                                   VerticalOptions="Center">
+                    <!-- App Logo or Title -->
+                    <Label Text="Login"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="#333333"
+                           HorizontalOptions="Center"
+                           Margin="0,0,0,20"/>
+
+                    <!-- Username Entry -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Username" 
+                               TextColor="#666666"
+                               FontSize="14"/>
+                        <Border StrokeShape="RoundRectangle 10"
+                                StrokeThickness="0.8"
+                                Stroke="#E0E0E0"
+                                BackgroundColor="#F8F8F8"
+                                HeightRequest="50"
+                                WidthRequest="250">
+                            <Grid ColumnDefinitions="*" 
+                                  RowDefinitions="*" 
+                                  Padding="15,0">
+                                <Entry x:Name="UsernameEntry" 
+                                       Placeholder="Enter Username"
+                                       PlaceholderColor="#CCCCCC"
+                                       TextColor="#333333"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="Transparent"/>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Password Entry -->
+                    <VerticalStackLayout Spacing="5">
+                        <Label Text="Password" 
+                               TextColor="#666666"
+                               FontSize="14"/>
+                        <Border StrokeShape="RoundRectangle 10"
+                                StrokeThickness="1"
+                                Stroke="#E0E0E0"
+                                BackgroundColor="#F8F8F8"
+                                HeightRequest="50"
+                                WidthRequest="250">
+                            <Grid ColumnDefinitions="*" 
+                                  RowDefinitions="*" 
+                                  Padding="15,0">
+                                <Entry x:Name="PasswordEntry" 
+                                       Placeholder="Enter Password"
+                                       PlaceholderColor="#CCCCCC"
+                                       TextColor="#333333"
+                                       IsPassword="True"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="Transparent"/>
+                            </Grid>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Login Button -->
+                    <Button Text="Login" 
+                            Clicked="OnLoginClicked"
+                            BackgroundColor="#007AFF"
+                            TextColor="White"
+                            CornerRadius="10"
+                            HeightRequest="45"
+                            WidthRequest="240"
+                            Margin="0,20,0,0"
+                            FontAttributes="Bold"/>
+                </VerticalStackLayout>
+            </Border>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
