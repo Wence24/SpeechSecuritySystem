@@ -14,9 +14,9 @@
 
             <!-- Welcome Animation Elements -->
             <VerticalStackLayout x:Name="WelcomeStack"
-                               Spacing="20" 
-                               HorizontalOptions="Center" 
-                               VerticalOptions="Center">
+                                 Spacing="20" 
+                                 HorizontalOptions="Center" 
+                                 VerticalOptions="Center">
                 <!-- Unlock Image -->
                 <Image x:Name="UnlockImage"
                        Source="unlock.png" 
@@ -36,38 +36,37 @@
 
             <!-- Login System Container -->
             <Border x:Name="LoginContainer"
-                   StrokeShape="RoundRectangle 20"
-                   BackgroundColor="White"
-                   Padding="30"
-                   Margin="20"
-                   WidthRequest="300"
-                   HeightRequest="400"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   IsVisible="False">
+                    StrokeShape="RoundRectangle 20"
+                    BackgroundColor="White"
+                    Padding="10"
+                    Margin="20"
+                    WidthRequest="300"
+                    HeightRequest="380"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    IsVisible="False">
 
                 <Border.Shadow>
                     <Shadow Brush="Black"
-                           Offset="0,10"
-                           Radius="20"
-                           Opacity="0.3"/>
+                            Offset="0,10"
+                            Radius="20"
+                            Opacity="0.3"/>
                 </Border.Shadow>
 
                 <!-- Login System -->
                 <VerticalStackLayout x:Name="LoginStack" 
-                                   Spacing="20" 
-                                   HorizontalOptions="Center" 
-                                   VerticalOptions="Center">
-                    <!-- App Logo or Title -->
-                    <Label Text="Login"
-                           FontSize="24"
-                           FontAttributes="Bold"
-                           TextColor="#333333"
+                                     Spacing="8" 
+                                     HorizontalOptions="Center" 
+                                     VerticalOptions="Start">
+                    <!-- Comelec Logo -->
+                    <Image Source="comelec.png"
+                           HeightRequest="100"
+                           WidthRequest="100"
                            HorizontalOptions="Center"
-                           Margin="0,0,0,20"/>
+                           Margin="0,0,0,5"/>
 
                     <!-- Username Entry -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="2">
                         <Label Text="Username" 
                                TextColor="#666666"
                                FontSize="14"/>
@@ -75,7 +74,7 @@
                                 StrokeThickness="0.8"
                                 Stroke="#E0E0E0"
                                 BackgroundColor="#F8F8F8"
-                                HeightRequest="50"
+                                HeightRequest="45"
                                 WidthRequest="250">
                             <Grid ColumnDefinitions="*" 
                                   RowDefinitions="*" 
@@ -91,7 +90,7 @@
                     </VerticalStackLayout>
 
                     <!-- Password Entry -->
-                    <VerticalStackLayout Spacing="5">
+                    <VerticalStackLayout Spacing="2">
                         <Label Text="Password" 
                                TextColor="#666666"
                                FontSize="14"/>
@@ -99,7 +98,7 @@
                                 StrokeThickness="1"
                                 Stroke="#E0E0E0"
                                 BackgroundColor="#F8F8F8"
-                                HeightRequest="50"
+                                HeightRequest="45"
                                 WidthRequest="250">
                             <Grid ColumnDefinitions="*" 
                                   RowDefinitions="*" 
@@ -123,8 +122,8 @@
                             CornerRadius="10"
                             HeightRequest="45"
                             WidthRequest="240"
-                            Margin="0,20,0,0"
-                            FontAttributes="Bold"/>
+                            FontAttributes="Bold"
+                            Margin="0,5,0,0"/>
                 </VerticalStackLayout>
             </Border>
         </Grid>
